@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read — FAITH</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">FAITH</a>
+        </nav>
+    </header>
+
+    <main class="main section">
+        <div class="container">
+            <h1 style="color: var(--title-color); margin-bottom: 1rem;">Reader</h1>
+
+            <div class="reader">
+                <aside class="file-list" id="fileList">
+                    <div class="file-item active" data-id="sample1">The Wanderer's Note</div>
+                    <div class="file-item" data-id="sample2">A Short Exercise in Imagination</div>
+                </aside>
+
+                <section class="reader__content" id="readerContent">
+                    <!-- content gets injected here -->
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const files = {
+            sample1: `The Wanderer's Note\n\nHe walked along a shore that had no edge. Clouds folded like paper figures, and the sea hummed in low, friendly tones. Each step left a print of ideas, not footprints.`,
+            sample2: `A Short Exercise in Imagination\n\nClose your eyes and imagine a door that opens to the sound of laughter. Beyond it, rooms of paper trees grow sentences instead of leaves.`
+        };
+
+        const fileList = document.getElementById('fileList');
+        const readerContent = document.getElementById('readerContent');
+
+        function render(id) {
+            readerContent.textContent = files[id] || 'File not found.';
+            document.querySelectorAll('.file-item').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+        }
+
+        fileList.addEventListener('click', (e) => {
+            const item = e.target.closest('.file-item');
+            if (!item) return;
+            render(item.dataset.id);
+        });
+
+        // initial
+        render('sample1');
+    </script>
+</body>
+
+</html>

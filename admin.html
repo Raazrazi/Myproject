@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — FAITH</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- Blocking login overlay shown when not authenticated -->
+  <div id="authOverlay" class="auth-overlay" style="display:none;">
+    <div class="auth-card">
+      <h2>Premium Login</h2>
+      <p class="auth-note">Please sign in to access the admin panel.</p>
+      <div class="auth-field">
+        <label>Username</label>
+        <input id="overlayUsername" class="auth-input" autocomplete="username">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input id="overlayPassword" class="auth-input" type="password" autocomplete="current-password">
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem;">
+        <button id="overlayLoginBtn" class="auth-button">Sign In</button>
+        <button id="overlayDemoBtn" class="auth-button" style="background:transparent;color:var(--title-color);border:1px solid var(--border-color);">Use Demo</button>
+      </div>
+    </div>
+  </div>
+  <header class="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">FAITH</a>
+    </nav>
+  </header>
+
+  <main class="main section">
+    <div class="container">
+      <div class="auth-card" id="authCard">
+        <div id="authArea">
+          <h2>Admin Login</h2>
+          <p class="auth-note">Enter your premium credentials to access administrative controls.</p>
+          <div class="auth-field">
+            <label>Username</label>
+            <input id="username" class="auth-input" autocomplete="username">
+          </div>
+          <div class="auth-field">
+            <label>Password</label>
+            <input id="password" class="auth-input" type="password" autocomplete="current-password">
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem;">
+            <button id="loginBtn" class="auth-button">Sign In</button>
+            <button id="demoBtn" class="auth-button" style="background:transparent;color:var(--title-color);border:1px solid var(--border-color);">Use Demo</button>
+          </div>
+        </div>
+
+        <div id="adminArea" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <h2>Admin Panel</h2>
+            <div>
+              <button id="logoutBtn" class="auth-button" style="background:transparent;color:var(--title-color);border:1px solid var(--border-color);">Logout</button>
+            </div>
+          </div>
+
+          <div class="admin-panel">
+            <label>Change Premium Credentials</label>
+            <div class="admin-row">
+              <input id="newUser" class="admin-field" placeholder="username">
+              <input id="newPass" type="password" class="admin-field" placeholder="password">
+              <button id="saveCreds" class="auth-button admin-save">Save</button>
+            </div>
+
+            <label>Hero Text</label>
+            <input id="heroTitle" class="admin-field" placeholder="Hero title">
+            <input id="heroSubtitle" class="admin-field" placeholder="Hero subtitle">
+
+            <label>Contact</label>
+            <input id="contactEmail" class="admin-field" placeholder="Email">
+            <input id="contactPhone" class="admin-field" placeholder="Phone">
+            <input id="contactFollow" class="admin-field" placeholder="Follow text">
+
+            <label>Reader Files (JSON)</label>
+            <textarea id="readerFiles" class="admin-field" style="min-height:140px; font-family:inherit;">
+
+            </textarea>
+
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+              <button id="saveSite" class="auth-button">Save Site Content</button>
+              <button id="resetSite" class="auth-button" style="background:transparent;color:var(--title-color);border:1px solid var(--border-color);">Reset to Defaults</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const defaultCreds = { username: 'admin', password: 'premium123' }
+
+      function getCreds() {
+        try { return JSON.parse(localStorage.getItem('siteCreds')) || defaultCreds } catch { return defaultCreds }
+      }
+
+      function setCreds(u,p) { localStorage.setItem('siteCreds', JSON.stringify({ username: u, password: p })) }
+
+      function checkAuth(u,p) {
+        const c = getCreds()
+        return (u === c.username && p === c.password)
+      }
+
+      const authArea = document.getElementById('authArea')
+      const adminArea = document.getElementById('adminArea')
+      const overlay = document.getElementById('authOverlay')
+
+      function showAdminUI() {
+        if (authArea) authArea.style.display = 'none'
+        if (adminArea) adminArea.style.display = 'block'
+        // populate fields from storage
+        const site = JSON.parse(localStorage.getItem('siteContent') || '{}')
+        if (document.getElementById('heroTitle')) document.getElementById('heroTitle').value = (site.hero && site.hero.title) || ''
+        if (document.getElementById('heroSubtitle')) document.getElementById('heroSubtitle').value = (site.hero && site.hero.subtitle) || ''
+        if (document.getElementById('contactEmail')) document.getElementById('contactEmail').value = (site.contact && site.contact.email) || ''
+        if (document.getElementById('contactPhone')) document.getElementById('contactPhone').value = (site.contact && site.contact.phone) || ''
+        if (document.getElementById('contactFollow')) document.getElementById('contactFollow').value = (site.contact && site.contact.follow) || ''
+        if (document.getElementById('readerFiles')) document.getElementById('readerFiles').value = JSON.stringify((site.readerFiles) || {
+          sample1: "The Wanderer's Note\n\nHe walked along a shore that had no edge...",
+          sample2: "A Short Exercise in Imagination\n\nClose your eyes and imagine..."
+        }, null, 2)
+      }
+
+      function showLoginUI() {
+        if (authArea) authArea.style.display = 'block'
+        if (adminArea) adminArea.style.display = 'none'
+      }
+
+      function showOverlay() { if (overlay) overlay.style.display = 'grid' }
+      function hideOverlay() { if (overlay) overlay.style.display = 'none' }
+
+      // Inline login form buttons
+      const inlineLoginBtn = document.getElementById('loginBtn')
+      const inlineDemoBtn = document.getElementById('demoBtn')
+      if (inlineLoginBtn) inlineLoginBtn.addEventListener('click', () => {
+        const u = (document.getElementById('username')||{}).value || ''
+        const p = (document.getElementById('password')||{}).value || ''
+        if (checkAuth(u,p)) {
+          localStorage.setItem('isPremium', 'true')
+          hideOverlay()
+          showAdminUI()
+        } else {
+          alert('Invalid credentials')
+        }
+      })
+      if (inlineDemoBtn) inlineDemoBtn.addEventListener('click', () => {
+        if (document.getElementById('username')) document.getElementById('username').value = defaultCreds.username
+        if (document.getElementById('password')) document.getElementById('password').value = defaultCreds.password
+      })
+
+      // Overlay login buttons
+      const overlayLoginBtn = document.getElementById('overlayLoginBtn')
+      const overlayDemoBtn = document.getElementById('overlayDemoBtn')
+      if (overlayLoginBtn) overlayLoginBtn.addEventListener('click', () => {
+        const u = (document.getElementById('overlayUsername')||{}).value || ''
+        const p = (document.getElementById('overlayPassword')||{}).value || ''
+        if (checkAuth(u,p)) {
+          localStorage.setItem('isPremium', 'true')
+          hideOverlay()
+          showAdminUI()
+        } else {
+          alert('Invalid credentials')
+        }
+      })
+      if (overlayDemoBtn) overlayDemoBtn.addEventListener('click', () => {
+        if (document.getElementById('overlayUsername')) document.getElementById('overlayUsername').value = defaultCreds.username
+        if (document.getElementById('overlayPassword')) document.getElementById('overlayPassword').value = defaultCreds.password
+      })
+
+      // logout
+      const logoutBtn = document.getElementById('logoutBtn')
+      if (logoutBtn) logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('isPremium')
+        showLoginUI()
+        showOverlay()
+      })
+
+      // save credentials
+      const saveCredsBtn = document.getElementById('saveCreds')
+      if (saveCredsBtn) saveCredsBtn.addEventListener('click', () => {
+        const nu = (document.getElementById('newUser')||{}).value || ''
+        const np = (document.getElementById('newPass')||{}).value || ''
+        if (!nu || !np) return alert('Enter username and password')
+        setCreds(nu,np)
+        alert('Credentials saved')
+      })
+
+      // save site content
+      const saveSiteBtn = document.getElementById('saveSite')
+      if (saveSiteBtn) saveSiteBtn.addEventListener('click', () => {
+        let files = {}
+        try { files = JSON.parse((document.getElementById('readerFiles')||{}).value || '{}') } catch (e) { return alert('Reader files JSON invalid') }
+        const content = {
+          hero: {
+            title: (document.getElementById('heroTitle')||{}).value || '',
+            subtitle: (document.getElementById('heroSubtitle')||{}).value || ''
+          },
+          contact: {
+            email: (document.getElementById('contactEmail')||{}).value || '',
+            phone: (document.getElementById('contactPhone')||{}).value || '',
+            follow: (document.getElementById('contactFollow')||{}).value || ''
+          },
+          readerFiles: files
+        }
+        localStorage.setItem('siteContent', JSON.stringify(content))
+        alert('Site content saved to localStorage')
+      })
+
+      // reset
+      const resetBtn = document.getElementById('resetSite')
+      if (resetBtn) resetBtn.addEventListener('click', () => {
+        if (!confirm('Reset site content to defaults?')) return
+        localStorage.removeItem('siteContent')
+        alert('Site content reset')
+        location.reload()
+      })
+
+      // init
+      try {
+        if (localStorage.getItem('isPremium') === 'true') {
+          hideOverlay()
+          showAdminUI()
+        } else {
+          showOverlay()
+          showLoginUI()
+        }
+      } catch (err) {
+        console.error('Admin init error', err)
+        showOverlay()
+        showLoginUI()
+      }
+    })()
+  </script>
+</body>
+</html>

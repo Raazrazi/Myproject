@@ -1,0 +1,176 @@
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suuu!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Attractive Modern Background -->
+    <div class="main-bg"></div>
+
+    <!-- Intro Reveal Animation -->
+    <div class="intro-overlay" id="intro-overlay">
+        <div class="intro__content">
+            <h1 class="intro__logo">
+                <span>F</span><span>A</span><span>I</span><span>T</span><span>H</span>
+            </h1>
+            <div class="intro__line"></div>
+        </div>
+    </div>
+
+
+
+
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">FAITH</a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="#home" class="nav__link active-link">Home</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#about" class="nav__link">About</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#services" class="nav__link">Services</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/members" class="nav__link">Members</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="#contact" class="nav__link">Contact</a>
+                    </li>
+                </ul>
+                <div class="nav__close" id="nav-close">×</div>
+                <div class="nav__indicator" id="nav-indicator"></div>
+            </div>
+
+            <div class="nav__actions">
+                <div class="nav__toggle" id="nav-toggle">☰</div>
+                <a href="#" class="nav__button" id="signup-btn">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signup-modal">
+        <div class="modal__container">
+            <div class="modal__close" id="modal-close">×</div>
+            <h2 class="modal__title">Sign Up</h2>
+            <p class="modal__description">Be part of the future. Sign up today.</p>
+
+            <form class="modal__form" action="/signup" method="post">
+                <div class="modal__group">
+                    <input type="text" name="name" placeholder="Full Name" class="modal__input" required>
+                </div>
+                <div class="modal__group">
+                    <input type="email" name="email" placeholder="Email Address" class="modal__input" required>
+                </div>
+                <div class="modal__group">
+                    <input type="password" name="password" placeholder="Password" class="modal__input" required>
+                </div>
+
+                <button class="modal__button">Create Account</button>
+
+                <p class="modal__footer">
+                    Already have an account? <a href="#" id="login-link-btn">Log In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="signin-modal">
+        <div class="modal__container">
+            <div class="modal__close" id="modal-close-signin">×</div>
+            <h2 class="modal__title">Sign In</h2>
+            <p class="modal__description">Welcome back. Access your account.</p>
+
+            <form class="modal__form" action="/login" method="post">
+
+                <div class="modal__group">
+                    <input type="email" name="email" placeholder="Email Address" class="modal__input" required>
+                </div>
+                <div class="modal__group">
+                    <input type="password" name="password" placeholder="Password" class="modal__input" required>
+                </div>
+
+                <button class="modal__button">Sign In</button>
+
+                <p class="modal__footer">
+                    Don't have an account? <a href="#" id="signup-link-btn">Sign Up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+
+    <main class="main">
+        <section class="section" id="home" style="min-height: 80vh; display: flex; align-items: center;">
+            <div class="container">
+                <div class="hero">
+                    <h1 class="hero__title">Welcome to FAITH — Imaginations in Motion</h1>
+                    <p class="hero__subtitle">A place for readers and creative developers to grow their imagination and
+                        skills.</p>
+
+                    <div class="hero__actions">
+                        <a class="nav__button cta-button" href="read.html">Let's Try</a>
+                        <a class="nav__button nav__button-ghost" href="#contact">Contact</a>
+                    </div>
+
+                    <p class="hero__note">Start exploring curated files to read, experiment, and build.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="about">
+            <div class="container">
+                <h2>About Us</h2>
+                <p>We spark imagination through reading material, tutorials, and small projects designed to stretch
+                    creativity.</p>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="container">
+                <h2>What You Can Do Here</h2>
+                <ul>
+                    <li>Read curated files and essays</li>
+                    <li>Try small interactive projects</li>
+                    <li>Share and develop imaginative ideas</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="portfolio">
+            <div class="container">
+                <h2>Featured</h2>
+                <p>Short showcases and sample reads for inspiration.</p>
+            </div>
+        </section>1
+
+        <section class="section" id="contact">
+            <div class="container">
+                <h2>Contact</h2>
+                <div class="contact-card">
+                    <p><strong>Email:</strong> faith.fmail@gmail.com</p>
+                    <p><strong>Follow:</strong> <a href="#">Twitter</a> • <a href="#">GitHub</a> • <a
+                            href="#">LinkedIn</a></p>
+                    <p style="margin-top: .75rem; color: var(--text-color-light);">Have a file you'd like us to feature?
+                        Send it to the email above and we'll review it.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
